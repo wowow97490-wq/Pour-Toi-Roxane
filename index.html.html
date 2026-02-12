@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pour Roxane 💜</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:'Poppins',sans-serif;
+ background:black;
+ color:#b36bff;
+ overflow-y:auto;
+}
+canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.container{
+ position:relative;
+ z-index:2;
+ max-width:800px;
+ margin:60px auto;
+ background:rgba(0,0,0,.55);
+ backdrop-filter: blur(10px);
+ padding:40px;
+ border-radius:25px;
+ box-shadow:0 0 50px rgba(179,107,255,.4);
+ text-align:center;
+ animation:heartbeat 6s ease-in-out infinite;
+}
+@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.01)}}
+h1{font-family:'Playfair Display',serif}
+.btn{
+ background:#b36bff;
+ color:black;
+ border:none;
+ padding:15px 35px;
+ font-size:20px;
+ border-radius:35px;
+ cursor:pointer;
+ transition:.3s;
+}
+.btn:hover{transform:scale(1.05)}
+.letter{display:none;margin-top:30px;font-size:18px;line-height:1.7;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{text-shadow:0 0 6px rgba(179,107,255,.6)}50%{text-shadow:0 0 16px rgba(179,107,255,1)}}
+#surprise{
+ display:none;
+ margin-top:40px;
+ font-size:28px;
+ font-family:'Playfair Display',serif;
+ color:#ff9cff;
+ text-shadow:0 0 20px rgba(255,156,255,.9);
+ animation:pulse 2s infinite;
+}
+@keyframes fall{from{transform:translateY(0)}to{transform:translateY(110vh);opacity:0}}
+@keyframes shoot{from{transform:translateX(0)}to{transform:translateX(120vw)}}
+</style>
+</head>
+<body>
+
+<audio id="music" preload="auto">
+ <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6f82c8b7a0.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="stars"></canvas>
+
+<div class="container">
+<h1>Pour Roxane 💜</h1>
+<h2>J'ai quelque chose d'unique pour toi ✨</h2>
+<button class="btn" id="start">Clique ici 💖</button>
+
+<div class="letter" id="letter" data-text="Si tu lis ces mots, c’est que tu as cliqué… et rien que ça, ça me fait sourire.
+Parce que chaque petit geste venant de toi compte infiniment pour moi.
+
+Je vais prendre le temps d’écrire, lentement, doucement, comme on chuchote une vérité importante, parce que ce que je ressens pour toi mérite chaque seconde, chaque mot, chaque battement de mon cœur.
+
+Depuis que tu es entrée dans ma vie, quelque chose s’est transformé en moi.
+Comme si une lumière nouvelle avait éclairé mes journées.
+Comme si chaque instant prenait soudainement plus de sens.
+
+Je pense à toi plus souvent que je ne l’aurais cru possible.
+Dans les moments simples.
+Dans les silences.
+Dans les sourires que la vie m’offre au hasard.
+
+Roxane, tu es devenue mon évidence.
+Celle qui traverse mon esprit dès le réveil.
+Celle qui m’accompagne jusque dans mes rêves.
+
+Ton sourire est une promesse de bonheur.
+Ton regard est un refuge.
+Ta voix est une douceur qui apaise.
+
+Je veux être celui qui marchera à tes côtés.
+Celui qui te soutiendra.
+Celui qui prendra soin de ton cœur.
+
+Parce que je tiens à toi.
+Profondément.
+Sincèrement.
+Éternellement.
+
+Roxane…
+Je t’aime plus que ces mots ne pourront jamais l’exprimer.
+
+Pour toujours,
+Ton amoureux 💌"></div>
+
+<div id="surprise">Roxane… veux-tu continuer cette histoire avec moi ? 💍</div>
+</div>
+
+<script>
+// étoiles
+const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');
+let w,h,stars=[];
+function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight}
+window.addEventListener('resize',resize);resize();
+for(let i=0;i<250;i++)stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.5,s:Math.random()*0.6+0.2});
+function animateStars(){
+ ctx.clearRect(0,0,w,h);
+ ctx.fillStyle='white';
+ stars.forEach(s=>{
+  ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
+  s.y+=s.s;if(s.y>h){s.y=0;s.x=Math.random()*w}
+ });
+ if(Math.random()<0.002)shootingStar();
+ requestAnimationFrame(animateStars);
+}
+animateStars();
+
+function shootingStar(){
+ const s=document.createElement('div');
+ s.style.position='fixed';
+ s.style.width='140px';
+ s.style.height='2px';
+ s.style.background='linear-gradient(90deg,rgba(255,255,255,0),white)';
+ s.style.top=Math.random()*50+'vh';
+ s.style.left='-150px';
+ s.style.animation='shoot 1.2s linear forwards';
+ document.body.appendChild(s);
+ setTimeout(()=>s.remove(),1300);
+}
+
+function heartsRain(n=70){
+ for(let i=0;i<n;i++){
+  const h=document.createElement('div');
+  h.innerHTML='❤️';
+  h.style.position='fixed';
+  h.style.left=Math.random()*100+'vw';
+  h.style.top='-30px';
+  h.style.fontSize=(Math.random()*26+14)+'px';
+  h.style.animation='fall '+(Math.random()*3+3)+'s linear forwards';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+ }
+}
+
+function typeWriter(){
+ const el=document.getElementById('letter');
+ const text=el.dataset.text;
+ let i=0;el.innerHTML='';el.style.display='block';
+ const t=setInterval(()=>{
+  if(i<text.length){
+   el.innerHTML+=text[i]=='\n'?'<br>':text[i];
+   el.scrollIntoView({behavior:'smooth',block:'end'});
+   i++;
+  } else {
+   clearInterval(t);
+   document.getElementById('surprise').style.display='block';
+  }
+ },30);
+}
+
+document.getElementById('start').onclick=()=>{
+ document.getElementById('start').style.display='none';
+ document.getElementById('music').play().catch(()=>{});
+ heartsRain();
+ typeWriter();
+};
+</script>
+</body>
+</html>
